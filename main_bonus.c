@@ -6,11 +6,12 @@
 /*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:43:22 by icseri            #+#    #+#             */
-/*   Updated: 2025/12/06 14:23:14 by dcsicsak         ###   ########.fr       */
+/*   Updated: 2025/12/06 20:18:17 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <GLFW/glfw3.h>
 
 int	main(int argc, char **argv)
 {
@@ -29,6 +30,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(data.mlx, key_hook, &data);
 	mlx_close_hook(data.mlx, close_hook, &data);
 	mlx_loop_hook(data.mlx, loop_hook, &data);
-	mlx_loop(data.mlx);
+	while (!glfwWindowShouldClose(data.mlx->window))
+		mlx_loop(data.mlx);
 	safe_exit(&data.map, EXIT_SUCCESS);
 }

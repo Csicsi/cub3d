@@ -6,7 +6,7 @@
 #    By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/20 10:41:15 by icseri            #+#    #+#              #
-#    Updated: 2025/12/06 19:48:41 by dcsicsak         ###   ########.fr        #
+#    Updated: 2025/12/06 20:13:28 by dcsicsak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,35 +70,4 @@ fclean: clean
 
 re: fclean all
 
-web:
-	@echo "Preparing WebGL-compatible shaders..."
-	@cp -f ./shaders/default.frag ./MLX42/shaders/default.frag
-	@echo "Rebuilding MLX42 with WebGL shaders..."
-	@bash -c "source ~/emsdk/emsdk_env.sh && \
-	rm -rf MLX42/build && \
-	emcmake cmake -B MLX42/build -S MLX42 -DCMAKE_BUILD_TYPE=Release && \
-	emmake make -C MLX42/build -j4"
-	@echo "Building for WebAssembly..."
-	@bash -c "source ~/emsdk/emsdk_env.sh && \
-	emcc -O3 \
-		main_web.c $(COMMON_SRCS) \
-		./libft/ft_*.c ./libft/get_next_line*.c \
-		$(MLX42_LIB) \
-		-I$(MLX42_DIR)/include \
-		-o cub3d.html \
-		-s USE_GLFW=3 \
-		-s USE_WEBGL2=1 \
-		-s FULL_ES3=1 \
-		-s WASM=1 \
-		-s NO_EXIT_RUNTIME=1 \
-		-s ALLOW_MEMORY_GROWTH=1 \
-		-s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' \
-		-s TOTAL_STACK=8388608 \
-		-s GL_DEBUG=1 \
-		-s ASSERTIONS=2 \
-		--shell-file shell.html \
-		--preload-file maps \
-		--preload-file textures"
-	@echo "Web build complete! Open cub3d.html in a browser."
-
-.PHONY: all clean fclean bonus re web
+.PHONY: all clean fclean bonus reNAME = cub3D
