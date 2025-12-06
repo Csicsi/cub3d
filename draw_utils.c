@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 13:01:37 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/13 09:01:23 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:34:11 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,32 @@ void	draw_texture_column(double step, int x, int *wall, t_texture *texture)
 	int			texture_x;
 	int			y;
 	uint32_t	color;
+	uint32_t	ceiling;
+	uint32_t	floor_color;
 
+	ceiling = texture->data_struct->map.ceiling | 0xFF000000;
+	floor_color = texture->data_struct->map.floor | 0xFF000000;
 	y = 0;
 	while (y < wall[0])
-		my_mlx_pixel_put(texture->data_struct, x, y++,
-			texture->data_struct->map.ceiling);
+		my_mlx_pixel_put(texture->data_struct, x, y++, ceiling);
 	while (y <= wall[1])
 	{
+		if (texture->height == 0 || texture->width == 0 || !texture->img)
+			break ;
 		texture_y = (int)texture->position % texture->height;
 		texture_x = ((int)(texture->data_struct->texture_x[x] * texture->width)
 				% texture->width);
+		if (texture_y < 0)
+			texture_y = 0;
+		if (texture_x < 0)
+			texture_x = 0;
 		color = ((uint32_t *)texture->img->pixels)[texture_y
 			* texture->width + texture_x];
 		my_mlx_pixel_put(texture->data_struct, x, y++, color);
 		texture->position += step;
 	}
 	while (y < HEIGHT)
-		my_mlx_pixel_put(texture->data_struct, x, y++,
-			texture->data_struct->map.floor);
+		my_mlx_pixel_put(texture->data_struct, x, y++, floor_color);
 }
 
 void	draw_vertical_line(t_data *data, int x, int wall_height)
@@ -105,11 +113,16 @@ void	draw_vertical_line(t_data *data, int x, int wall_height)
 	double		step;
 	int			original_wall_top;
 	t_texture	*texture;
+	int			frame_idx;
 
 	if (data->ray_dir[x] < 0 || data->ray_dir[x] >= 5)
 		data->ray_dir[x] = NORTH;
-	texture = &data->textures[data->ray_dir[x]][data->frame
-		% data->frame_count[data->ray_dir[x]]];
+	if (data->frame_count[data->ray_dir[x]] == 0)
+		return ;
+	frame_idx = data->frame % data->frame_count[data->ray_dir[x]];
+	texture = &data->textures[data->ray_dir[x]][frame_idx];
+	if (!texture || !texture->img || texture->height == 0 || wall_height <= 0)
+		return ;
 	texture->data_struct = data;
 	wall[0] = (HEIGHT - wall_height) / 2;
 	wall[1] = wall[0] + wall_height - 1;

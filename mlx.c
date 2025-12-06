@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 19:36:26 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/19 11:09:59 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:28:01 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	render_scene(t_data *data)
 	int	wall_height;
 
 	update_animation_frame(data);
+	ft_memset(data->img->pixels, 0, WIDTH * HEIGHT * sizeof(uint32_t));
 	cast_rays(data);
 	wall_height = 0;
 	x = -1;
@@ -49,7 +50,8 @@ void	render_scene(t_data *data)
 			draw_vertical_line(data, x, wall_height);
 		}
 	}
-	draw_minimap(data);
+	if (data->map.is_bonus)
+		draw_minimap(data);
 }
 
 void	key_hook(mlx_key_data_t keydata, void *param)
@@ -65,5 +67,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		if (keydata.key == KEY_E)
 			check_and_open_door_nearby(data, data->player_x + 0.5,
 				data->player_y + 0.5);
+		render_scene(data);
 	}
 }

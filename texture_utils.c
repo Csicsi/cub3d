@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:43:35 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/19 11:01:10 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:23:14 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 void	load_texture(t_data *data, t_texture *texture, char *file)
 {
-	xpm_t	*xpm;
+	mlx_texture_t	*tex;
 
-	xpm = mlx_load_xpm42(file);
-	if (!xpm)
+	tex = mlx_load_png(file);
+	if (!tex)
 	{
 		print_error(1, "Error: Failed to load texture");
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
-	texture->img = mlx_texture_to_image(data->mlx, &xpm->texture);
+	texture->img = mlx_texture_to_image(data->mlx, tex);
 	if (!texture->img)
 	{
 		print_error(1, "Error: Failed to convert texture to image");
-		mlx_delete_xpm42(xpm);
+		mlx_delete_texture(tex);
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
-	texture->width = xpm->texture.width;
-	texture->height = xpm->texture.height;
+	texture->width = tex->width;
+	texture->height = tex->height;
 	texture->texture = NULL;
-	mlx_delete_xpm42(xpm);
+	mlx_delete_texture(tex);
 }
 
 void	set_counts(t_data *data)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cast_rays.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 13:31:42 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/10 10:15:08 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:29:24 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	cast_rays(t_data *data)
 	ray_index = 0;
 	angle_increment = FIELD_OF_VIEW / WIDTH;
 	ray_angle = data->player_angle - FIELD_OF_VIEW / 2;
-	while (ray_angle < data->player_angle + FIELD_OF_VIEW / 2)
+	while (ray_index < WIDTH)
 	{
 		cast_ray(data, ray_angle, ray_index);
 		ray_angle += angle_increment;

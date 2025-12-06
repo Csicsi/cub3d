@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:43:35 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/19 10:56:25 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:42:14 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@
 # define NUM_FRAMES 100
 # define FRAME_DURATION 0.1
 
-# define PLAYER_COLOR 0xFF0000 // Red
-# define GRID_COLOR 0xFF0000 // Red
-# define DOOR_COLOR 0xA52A2A // Brown
+# define PLAYER_COLOR 0xFFFF0000
+# define GRID_COLOR 0xFFFF0000
+# define DOOR_COLOR 0xFFA52A2A
 
 # define KEY_ESC MLX_KEY_ESCAPE
 # define KEY_W MLX_KEY_W

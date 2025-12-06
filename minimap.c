@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: icseri <icseri@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 14:54:17 by icseri            #+#    #+#             */
-/*   Updated: 2024/12/10 10:17:00 by icseri           ###   ########.fr       */
+/*   Updated: 2025/12/06 14:42:14 by dcsicsak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	draw_tile(t_data *data, int row, int col)
 	data->rect.width = data->minimap.tile_size;
 	data->rect.height = data->minimap.tile_size;
 	if (data->minimap.tile == '1')
-		data->rect.color = data->map.ceiling;
+		data->rect.color = data->map.ceiling | 0xFF000000;
 	else if (data->minimap.tile == 'D')
-		data->rect.color = DOOR_COLOR;
+		data->rect.color = DOOR_COLOR | 0xFF000000;
 	else if (ft_strchr("WENS0d", data->minimap.tile) != 0)
-		data->rect.color = data->map.floor;
+		data->rect.color = data->map.floor | 0xFF000000;
 	else
-		data->rect.color = 0;
+		data->rect.color = 0xFF000000;
 	draw_rectangle(data, &data->rect);
 }
 
