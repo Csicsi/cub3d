@@ -6,7 +6,7 @@
 #    By: dcsicsak <dcsicsak@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/20 10:41:15 by icseri            #+#    #+#              #
-#    Updated: 2025/12/06 20:13:28 by dcsicsak         ###   ########.fr        #
+#    Updated: 2025/12/06 20:28:52 by dcsicsak         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ BONUS_NAME = cub3D_bonus
 
 MLX42_DIR = MLX42
 MLX42_LIB = $(MLX42_DIR)/build/libmlx42.a
+MLX42_WEB_LIB = $(MLX42_DIR)/build_web/libmlx42.a
 MLX42_FLAGS = -lglfw -ldl -pthread -lm
+
+LIBFT_DIR = libft
+LIBFT_SRCS = $(wildcard $(LIBFT_DIR)/*.c)
 
 COMMON_SRCS = init.c \
 				parsing.c \
@@ -70,4 +74,21 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean bonus reNAME = cub3D
+web:
+	@bash -c "source ~/emsdk/emsdk_env.sh && \
+		emcc -O3 \
+		main_web.c ${COMMON_SRCS} $(LIBFT_SRCS) \
+		$(MLX42_WEB_LIB) \
+		-o cub3d.html \
+		-s USE_GLFW=3 \
+		-s USE_WEBGL2=1 \
+		-s FULL_ES3=1 \
+		-s WASM=1 \
+		-s ALLOW_MEMORY_GROWTH=1 \
+		-s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' \
+		--preload-file maps \
+		--preload-file textures \
+		-I./libft \
+		-I$(MLX42_DIR)/include"
+
+.PHONY: all clean fclean bonus re web
