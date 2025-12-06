@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <stddef.h>
-# include <mlx.h>
+# include "MLX42/include/MLX42/MLX42.h"
 # include <stdlib.h>
 # include <math.h>
 # include <sys/time.h>
@@ -39,14 +39,14 @@
 # define GRID_COLOR 0xFF0000 // Red
 # define DOOR_COLOR 0xA52A2A // Brown
 
-# define KEY_ESC 65307
-# define KEY_W 119
-# define KEY_A 97
-# define KEY_S 115
-# define KEY_D 100
-# define KEY_E 101
-# define ARROW_LEFT 65361
-# define ARROW_RIGHT 65363
+# define KEY_ESC MLX_KEY_ESCAPE
+# define KEY_W MLX_KEY_W
+# define KEY_A MLX_KEY_A
+# define KEY_S MLX_KEY_S
+# define KEY_D MLX_KEY_D
+# define KEY_E MLX_KEY_E
+# define ARROW_LEFT MLX_KEY_LEFT
+# define ARROW_RIGHT MLX_KEY_RIGHT
 
 typedef enum e_dir
 {
@@ -96,12 +96,12 @@ typedef struct s_map
 
 typedef struct s_texture
 {
-	void	*img;
-	int		*data;
-	int		width;
-	int		height;
-	double	position;
-	t_data	*data_struct;
+	mlx_texture_t	*texture;
+	mlx_image_t		*img;
+	int				width;
+	int				height;
+	double			position;
+	t_data			*data_struct;
 }	t_texture;
 
 typedef struct s_line
@@ -184,13 +184,8 @@ typedef struct s_proximity
 
 typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*addr;
-	int			bpp;
-	int			line_len;
-	int			endian;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
 	int			frame;
 	double		last_frame;
 	t_map		map;
@@ -200,8 +195,6 @@ typedef struct s_data
 	double		ray_distance[WIDTH];
 	double		texture_x[WIDTH];
 	int			ray_dir[WIDTH];
-	void		*texture_img;
-	int			*texture_data;
 	int			frame_count[5];
 	t_texture	**textures;
 	t_minimap	minimap;
@@ -230,12 +223,12 @@ void	allocate_textures(t_data *data);
 
 //mlx & mlx_monus
 void	render_scene(t_data *data);
-int		key_hook(int keycode, t_data *data);
+void	key_hook(mlx_key_data_t keydata, void *param);
 double	get_time(void);
 
 //mlx utils
-int		close_window(t_data *data);
-int		track_mouse(void *param);
+void	close_hook(void *param);
+void	loop_hook(void *param);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 //cleanup

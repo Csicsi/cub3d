@@ -14,20 +14,25 @@
 
 void	load_texture(t_data *data, t_texture *texture, char *file)
 {
-	texture->img = mlx_xpm_file_to_image(data->mlx, file,
-			&texture->width, &texture->height);
-	if (!texture->img)
+	xpm_t	*xpm;
+
+	xpm = mlx_load_xpm42(file);
+	if (!xpm)
 	{
 		print_error(1, "Error: Failed to load texture");
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
-	texture->data = (int *)mlx_get_data_addr(texture->img,
-			&data->bpp, &data->line_len, &data->endian);
-	if (!texture->data)
+	texture->img = mlx_texture_to_image(data->mlx, &xpm->texture);
+	if (!texture->img)
 	{
-		print_error(1, "Error: Failed to retrieve texture data");
+		print_error(1, "Error: Failed to convert texture to image");
+		mlx_delete_xpm42(xpm);
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
+	texture->width = xpm->texture.width;
+	texture->height = xpm->texture.height;
+	texture->texture = NULL;
+	mlx_delete_xpm42(xpm);
 }
 
 void	set_counts(t_data *data)
@@ -112,7 +117,7 @@ void	free_textures(t_data *data)
 		{
 			j = -1;
 			while (data->textures[i][++j].img != NULL)
-				mlx_destroy_image(data->mlx, data->textures[i][j].img);
+				mlx_delete_image(data->mlx, data->textures[i][j].img);
 			free(data->textures[i]);
 		}
 		free(data->textures);

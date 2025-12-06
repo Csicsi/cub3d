@@ -26,10 +26,9 @@ int	main(int argc, char **argv)
 	cast_rays(&data);
 	load_all_textures(&data);
 	render_scene(&data);
-	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-	mlx_hook(data.win, 2, 1L << 0, key_hook, &data);
-	mlx_hook(data.win, 17, 0, close_window, &data);
-	mlx_loop_hook(data.mlx, track_mouse, &data);
+	mlx_key_hook(data.mlx, key_hook, &data);
+	mlx_close_hook(data.mlx, close_hook, &data);
+	mlx_loop_hook(data.mlx, loop_hook, &data);
 	mlx_loop(data.mlx);
 	safe_exit(&data.map, EXIT_SUCCESS);
 }

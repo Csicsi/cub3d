@@ -37,16 +37,10 @@ void	init_data(t_data *data)
 
 void	init_mlx(t_data *data)
 {
-	data->mlx = mlx_init();
+	data->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	if (!data->mlx)
 	{
 		print_error(1, "Error: Failed to initialize mlx\n");
-		safe_exit(&data->map, EXIT_FAILURE);
-	}
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "cub3d");
-	if (!data->win)
-	{
-		print_error(1, "Error: Failed to create window\n");
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
 	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
@@ -55,8 +49,11 @@ void	init_mlx(t_data *data)
 		print_error(1, "Error: Failed to create image\n");
 		safe_exit(&data->map, EXIT_FAILURE);
 	}
-	data->addr = mlx_get_data_addr(data->img,
-			&data->bpp, &data->line_len, &data->endian);
+	if (mlx_image_to_window(data->mlx, data->img, 0, 0) < 0)
+	{
+		print_error(1, "Error: Failed to display image\n");
+		safe_exit(&data->map, EXIT_FAILURE);
+	}
 }
 
 void	set_player(t_data *data)

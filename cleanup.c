@@ -56,15 +56,8 @@ void	errors(int exit_code)
 
 void	free_mlx(t_data *data)
 {
-	if (data->img)
-		mlx_destroy_image(data->mlx, data->img);
-	if (data->win)
-		mlx_destroy_window(data->mlx, data->win);
 	if (data->mlx)
-	{
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-	}
+		mlx_terminate(data->mlx);
 }
 
 void	safe_exit(t_map *map, int exit_code)

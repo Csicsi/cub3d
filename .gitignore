@@ -1,0 +1,28 @@
+# Binaries
+cub3D
+cub3D_bonus
+
+# Object files
+*.o
+*.a
+
+# MLX42 library
+MLX42/build/
+MLX42/.cache/
+
+# Web build output
+web/
+*.wasm
+*.js
+*.data
+*.html
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store

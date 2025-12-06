@@ -75,8 +75,10 @@ void	draw_line(t_data *data, t_line *line)
 
 void	draw_texture_column(double step, int x, int *wall, t_texture *texture)
 {
-	int	texture_y;
-	int	y;
+	int			texture_y;
+	int			texture_x;
+	int			y;
+	uint32_t	color;
 
 	y = 0;
 	while (y < wall[0])
@@ -85,10 +87,11 @@ void	draw_texture_column(double step, int x, int *wall, t_texture *texture)
 	while (y <= wall[1])
 	{
 		texture_y = (int)texture->position % texture->height;
-		my_mlx_pixel_put(texture->data_struct, x, y++,
-			texture->data[texture_y * texture->width
-			+ ((int)(texture->data_struct->texture_x[x] * texture->width)
-				% texture->width)]);
+		texture_x = ((int)(texture->data_struct->texture_x[x] * texture->width)
+				% texture->width);
+		color = ((uint32_t *)texture->img->pixels)[texture_y
+			* texture->width + texture_x];
+		my_mlx_pixel_put(texture->data_struct, x, y++, color);
 		texture->position += step;
 	}
 	while (y < HEIGHT)

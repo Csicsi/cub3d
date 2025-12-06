@@ -15,7 +15,9 @@ NAME = cub3D
 
 BONUS_NAME = cub3D_bonus
 
-MLX_FLAGS = -lmlx -lXext -lX11 -lm -lz -lbsd
+MLX42_DIR = MLX42
+MLX42_LIB = $(MLX42_DIR)/build/libmlx42.a
+MLX42_FLAGS = -lglfw -ldl -pthread -lm
 
 COMMON_SRCS = init.c \
 				parsing.c \
@@ -53,11 +55,11 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	@${MAKE} -C ./libft --no-print-directory
-	@${COMP} ${CFLAGS} ${OBJS} ./libft/libft.a -o ${NAME} $(MLX_FLAGS)
+	@${COMP} ${CFLAGS} ${OBJS} ./libft/libft.a $(MLX42_LIB) -o ${NAME} $(MLX42_FLAGS)
 
 bonus: ${BONUS_OBJS}
 	@${MAKE} -C ./libft --no-print-directory
-	@${COMP} ${CFLAGS} ${BONUS_OBJS} ./libft/libft.a -o ${BONUS_NAME} $(MLX_FLAGS)
+	@${COMP} ${CFLAGS} ${BONUS_OBJS} ./libft/libft.a $(MLX42_LIB) -o ${BONUS_NAME} $(MLX42_FLAGS)
 
 clean:
 	@${MAKE} -C ./libft --no-print-directory fclean

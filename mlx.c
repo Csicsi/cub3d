@@ -50,26 +50,20 @@ void	render_scene(t_data *data)
 		}
 	}
 	draw_minimap(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
-int	key_hook(int keycode, t_data *data)
+void	key_hook(mlx_key_data_t keydata, void *param)
 {
-	if (keycode == KEY_ESC)
-		close_window(data);
-	mlx_destroy_image(data->mlx, data->img);
-	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (!data->img)
+	t_data	*data;
+
+	data = (t_data *)param;
+	if (keydata.key == KEY_ESC && keydata.action == MLX_PRESS)
+		mlx_close_window(data->mlx);
+	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 	{
-		print_error(1, "Error: Failed to create new image\n");
-		close_window(data);
+		update_player_position(data, keydata.key);
+		if (keydata.key == KEY_E)
+			check_and_open_door_nearby(data, data->player_x + 0.5,
+				data->player_y + 0.5);
 	}
-	data->addr = mlx_get_data_addr(data->img, &data->bpp,
-			&data->line_len, &data->endian);
-	update_player_position(data, keycode);
-	if (keycode == KEY_E)
-		check_and_open_door_nearby(data, data->player_x + 0.5,
-			data->player_y + 0.5);
-	render_scene(data);
-	return (0);
 }
